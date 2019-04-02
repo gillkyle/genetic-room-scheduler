@@ -1,19 +1,25 @@
+DAYS = [
+    "M",
+    "T",
+    "W",
+    "Th",
+    "F",
+]
+
+
 class AvailabeRooms:
     '''
     List of available room resources
     '''
 
     def __init__(self):
-        self.rooms = []
+        self.rooms = {key: [] for key in DAYS}
 
     def __repr__(self):
         return "%s(%r)" % (self.__class__, self.__dict__)
 
     def add(self, room_resource):
-        self.rooms.append(room_resource)
-
-    def get_len(self):
-        return len(self.rooms)
+        self.rooms[room_resource.day].append(room_resource)
 
     def get_free_slot(length, num_days):
         '''
@@ -30,6 +36,7 @@ class RoomResource:
 
     def __init__(self, room_number, day, timeslot):
         self.code = f'{room_number}-{day}-{timeslot}'
+        self.day = day
 
     def __repr__(self):
         return "%s(%r)" % (self.__class__, self.__dict__)

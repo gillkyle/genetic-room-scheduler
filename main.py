@@ -1,16 +1,7 @@
 import csv
 from course import Course
 from room import Room
-from room_resource import AvailabeRooms, RoomResource
-
-
-DAYS = [
-    "M",
-    "T",
-    "W",
-    "Th",
-    "F",
-]
+from room_resource import AvailabeRooms, RoomResource, DAYS
 
 
 def main():
@@ -37,7 +28,7 @@ def main():
     print("Room list loaded")
     print(rooms[0])
 
-    print("Create room resources")
+    print("Create 2880 room resources")
     available = AvailabeRooms()
     # loop through all the days
     for day in DAYS:
@@ -51,7 +42,7 @@ def main():
             for i in range(0, 18):
                 available.add(RoomResource(room.number, day, i))
 
-    print(available.get_len())
+    print(available.rooms["M"][-1])
 
 
 ### Main runner ###
