@@ -1,0 +1,39 @@
+Course,Monday,Tuesday,Wednesday,Thursday,Friday,Sections,Hours,Preferred Time,Preferred Room Type,Students Per Section
+BUS M 170,x,,x,,,1,1.25,Morning,None,340
+BUS M 180,,,,,x,1,1.25,Morning,None,300
+BUS M 241,,,x,,,1,1.25,Afternoon,Case,40
+BUS M 260,x,,x,,,2,1.5,Morning,Case,50
+BUS M 277,,x,,x,,2,1.25,Morning,Case,60
+BUS M 313,, ,,x,,5,1.25,Morning,Case,25
+BUS M 361,x,,x,,,6,1,Morning,Case,55
+BUS M 371R,x,,,,,3,1.25,Afternoon,None,320
+BUS M 372,,x,,x,,2,1.25,Morning,Case,45
+BUS M 380,,,,,x,2,1.25,Morning,Case,80
+BUS M 390 MW,x,,x,,,5,1.25,Afternoon,Case,150
+BUS M 390 TTh,,x,,x,,6,1.25,Morning,Case,150
+BUS M 430,x,,x,,,4,1.25,Morning,Flat,35
+BUS M 431,x,,x,,,1,1.25,Afternoon,Case,35
+BUS M 440,,x,,x,,1,1.25,Afternoon,Case,40
+BUS M 450,x,,x,,,3,1.25,Morning,Case,45
+BUS M 454,,x,,x,,2,1.25,Morning,Flat,24
+BUS M 457,,x,,x,,1,1.25,Morning,Case,46
+BUS M 459,x,,x,,,2,1.25,Morning,Case,40
+BUS M 461,,x,,x,,1,1.25,Afternoon,Case,60
+BUS M 462,,x,,x,,1,1.25,Morning,Case,40
+BUS M 465,x,,x,,,1,1.25,Morning,Case,45
+BUS M 471,x,,x,,,2,2,Afternoon,Flat,35
+BUS M 472,,,,x,,1,2,Morning,Flat,45
+BUS M 475,,x,,,,1,1.25,Morning,Flat,30
+BUS M 476,,x,,x,,1,1.25,Morning,Flat,40
+BUS M 478A,,x,,x,,1,1.25,Afternoon,Flat,35
+BUS M 481,,x,,x,,2,1.5,Morning,Flat,35
+BUS M 482,,x,,x,,2,1.25,Morning,Flat,35
+BUS M 487,,x,,x,,5,1.25,Morning,Flat,55
+BUS M 489,,x,,x,,1,1.25,Afternoon,Flat,43
+BUS M 490R F,,,,,x,4,2,Morning,Flat,15
+BUS M 490R MW,x,,x,,,6,1,Afternoon,Flat,10
+BUS M 490R TTh,,x,,x,,7,1,Morning,Flat,32
+BUS M 490R W,,,x,,,2,2,Morning,Flat,43
+BUS M 498,x,,x,,,2,0.5,Morning,Flat,60
+BUS M 581,,x,,x,,2,1.75,Afternoon,Flat,60
+BUS M 582,x,,x,,,1,1.75,Morning,Flat,45
