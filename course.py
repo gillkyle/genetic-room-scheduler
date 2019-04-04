@@ -1,3 +1,6 @@
+from math import ceil
+
+
 class Course:
     '''
     A class that holds a specific course
@@ -19,3 +22,7 @@ class Course:
 
     def __repr__(self):
         return "%s(%r)" % (self.__class__, self.__dict__)
+
+    def needed_time_slots(self):
+        # account for 15 min break in classes and use 30 min blocks
+        return ceil((self.minutes + 15) / 30)

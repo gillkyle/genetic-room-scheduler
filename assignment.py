@@ -14,7 +14,7 @@ class CourseAssignment:
     def __repr__(self):
         return "%s(%r)" % (self.__class__, self.__dict__)
 
-    def getIndvFitness():
+    def get_ind_fitness(self):
         '''
         returns a fitness value in the range 0-100
         '''

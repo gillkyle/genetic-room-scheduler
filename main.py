@@ -1,7 +1,9 @@
 import csv
 from course import Course
+from assignment import CourseAssignment
 from room import Room
 from room_resource import AvailabeRooms, RoomResource, DAYS
+from solution import Solution
 
 
 def main():
@@ -40,9 +42,37 @@ def main():
             # 2:00 (12), 2:30 (13), 3:00 (14), 3:30 (15),
             # 4:00 (16), 4:30 (17)
             for i in range(0, 18):
-                available.add(RoomResource(room.number, day, i))
+                available.add(RoomResource(room, day, i))
 
     print(available.rooms["M"][-1])
+
+    print("Add to Solution")
+    solution = Solution(None)
+    cas = []
+    for course in courses:
+        if course.m:
+            for room_resource in available.pull_out_rooms("M", course.needed_time_slots()):
+                cas.append(CourseAssignment(room_resource.room,
+                                            course, room_resource.code.split("-")[2]))
+        if course.t:
+            for room_resource in available.pull_out_rooms("T", course.needed_time_slots()):
+                cas.append(CourseAssignment(room_resource.room,
+                                            course, room_resource.code.split("-")[2]))
+        if course.w:
+            for room_resource in available.pull_out_rooms("W", course.needed_time_slots()):
+                cas.append(CourseAssignment(room_resource.room,
+                                            course, room_resource.code.split("-")[2]))
+        if course.th:
+            for room_resource in available.pull_out_rooms("Th", course.needed_time_slots()):
+                cas.append(CourseAssignment(room_resource.room,
+                                            course, room_resource.code.split("-")[2]))
+        if course.f:
+            for room_resource in available.pull_out_rooms("F", course.needed_time_slots()):
+                cas.append(CourseAssignment(room_resource.room,
+                                            course, room_resource.code.split("-")[2]))
+    print(len(cas))
+    for ca in cas:
+        print(ca.get_ind_fitness())
 
 
 ### Main runner ###

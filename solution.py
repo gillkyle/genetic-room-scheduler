@@ -18,3 +18,17 @@ class Solution:
         '''
         # TODO determine individual fitness
         return randint(0, 100)
+
+    def crossover(other):
+        '''
+        crosses with another solution and returns a new course assignemnt
+        '''
+        # TODO
+        return None
+
+    def mutate():
+        '''
+        mutates the solution in some way
+        '''
+        # TODO
+        return None
