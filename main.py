@@ -5,6 +5,8 @@ from room import Room
 from room_resource import AvailabeRooms, RoomResource, DAYS
 from solution import Solution
 
+TOTAL_STUDENTS = 6277
+
 
 def main():
     with open('classes.csv', mode="r") as class_csv:
@@ -12,12 +14,16 @@ def main():
         class_reader = csv.DictReader(class_csv, delimiter=",")
         courses = []
         for row in class_reader:
-            c = Course(row["Course"], row["Monday"], row["Tuesday"], row["Wednesday"], row["Thursday"], row["Friday"],
+            c = Course(row["Course"], [row["Monday"] == "x", row["Tuesday"] == "x", row["Wednesday"] == "x", row["Thursday"] == "x", row["Friday"] == "x"],
                        row["Sections"], row["Hours"], row["Preferred Time"], row["Preferred Room Type"], row["Students Per Section"])
             courses.append(c)
 
     print("Course list loaded")
     print(courses[0])
+    sections = []
+    for course in courses:
+        for i in range(course.sections):
+            sections.append(course)
 
     with open('rooms.csv', mode="r") as room_csv:
         # read in the rooms
@@ -44,35 +50,41 @@ def main():
             for i in range(0, 18):
                 available.add(RoomResource(room, day, i))
 
-    print(available.rooms["M"][-1])
+    print(available.rooms["Th"][-1])
 
     print("Add to Solution")
     solution = Solution(None)
     cas = []
-    for course in courses:
-        if course.m:
-            for room_resource in available.pull_out_rooms("M", course.needed_time_slots()):
-                cas.append(CourseAssignment(room_resource.room,
-                                            course, room_resource.code.split("-")[2]))
-        if course.t:
-            for room_resource in available.pull_out_rooms("T", course.needed_time_slots()):
-                cas.append(CourseAssignment(room_resource.room,
-                                            course, room_resource.code.split("-")[2]))
-        if course.w:
-            for room_resource in available.pull_out_rooms("W", course.needed_time_slots()):
-                cas.append(CourseAssignment(room_resource.room,
-                                            course, room_resource.code.split("-")[2]))
-        if course.th:
-            for room_resource in available.pull_out_rooms("Th", course.needed_time_slots()):
-                cas.append(CourseAssignment(room_resource.room,
-                                            course, room_resource.code.split("-")[2]))
-        if course.f:
-            for room_resource in available.pull_out_rooms("F", course.needed_time_slots()):
-                cas.append(CourseAssignment(room_resource.room,
-                                            course, room_resource.code.split("-")[2]))
+    outside_building = []
+
+    # go through all sections
+        # extract room resources 
+        # if resources is empty
+            # add course to outside_building
+        # else
+            # add course assignment to cas
+
+    for course in sections:
+        index = 0
+        for schedule_on_this_day in course.days:
+            if schedule_on_this_day:
+                # get enough room resources required for the course
+                room_resources = available.pull_out_rooms(DAYS[index], course)
+                if len(room_resources) == 0:
+                    outside_building.append(course)
+                else:
+                    cas.append(CourseAssignment(room_resources, course))
+            index += 1
+
+    print(cas[5].course.name)
+    print("course", cas[5].course)
+    print("room", cas[5].room)
+    print(cas[5].get_capacity_value())
+    print(cas[5].get_pref_time_value())
+    print(cas[5].get_pref_type_value())
+    print(cas[5])
     print(len(cas))
-    for ca in cas:
-        print(ca.get_ind_fitness())
+    print(outside_building)
 
 
 ### Main runner ###

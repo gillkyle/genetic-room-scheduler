@@ -6,14 +6,10 @@ class Course:
     A class that holds a specific course
     '''
 
-    def __init__(self, name, m, t, w, th, f, sections, hours, pref_time, pref_room_type, num_students):
+    def __init__(self, name, days, sections, hours, pref_time, pref_room_type, num_students):
         self.name = name
-        self.m = m == "x"
-        self.t = t == "x"
-        self.w = w == "x"
-        self.th = th == "x"
-        self.f = f == "x"
-        self.sections = sections
+        self.days = days
+        self.sections = int(sections)
         self.hours = hours
         self.minutes = float(hours) * 60
         self.pref_time = pref_time

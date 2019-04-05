@@ -21,19 +21,28 @@ class AvailabeRooms:
     def add(self, room_resource):
         self.rooms[room_resource.day].append(room_resource)
 
-    def pull_out_rooms(self, day, num_rooms):
+    def pull_out_rooms(self, day, course):
         '''
         remove a number of rooms from the available slot on a given day
         '''
-        for _ in range(num_rooms):
-            yield self.rooms[day].pop(0)
 
-    def get_free_slot(length, num_days):
-        '''
-        find the next free class to make an assignment to
-        '''
-        # TODO
-        return None
+        def students_exceed_capacity(self):
+            if self.room.capacity < course.num_students:
+                # print(
+                #     f'Capacity of {self.room.capacity} is too small for {course.num_students} that need the class.')
+                return False
+            else:
+                # print(
+                #     f'{self.room.capacity} is appropriate for {course.num_students} students.')
+                return True
+
+        filtered_rooms = list(
+            filter(students_exceed_capacity, self.rooms[day]))
+        if len(filtered_rooms) < 1:
+            return []
+
+        rooms = filtered_rooms[0:course.needed_time_slots()]
+        return rooms
 
 
 class RoomResource:
