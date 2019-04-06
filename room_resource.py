@@ -21,7 +21,7 @@ class AvailabeRooms:
     def add(self, room_resource):
         self.rooms[room_resource.day].append(room_resource)
 
-    def pull_out_rooms(self, day, course):
+    def pull_out_rooms(self, course):
         '''
         remove a number of rooms from the available slot on a given day
         '''
@@ -44,10 +44,39 @@ class AvailabeRooms:
         rooms = filtered_rooms[0:course.needed_time_slots()]
         return rooms
 
+    def pull_out_resources(self, course):
+        rooms = []
+        number_of_slots = course.needed_time_slots()
+        # print(number_of_slots)
+
+        # go through each day that the course needs
+        day_index = 0
+        for should_assign_day in course.days:
+            if should_assign_day:
+                # find the allotted time
+                # print(f"-------{DAYS[day_index]}--------")
+                avail = self.rooms[DAYS[day_index]]
+
+                # stop looping the number of slots before to avoid index out of bounds
+                for i in range(len(avail) - number_of_slots):
+                    avail_resources = avail[i:number_of_slots]
+                    # if there aren't enough slots available just skip
+                    if number_of_slots > len(avail_resources):
+                        break
+                    # print(avail_resources)
+                    # if all(resource.? == ? for resource in avail_resources)
+                    if avail_resources[0].room.capacity > course.num_students:
+                        rooms += avail_resources
+                        # remove the rooms we're returning from the availability
+                        break
+            day_index += 1
+
+        return rooms
+
 
 class RoomResource:
     '''
-    A resource of a specific time slot in an associated room 
+    A resource of a specific time slot in an associated room
     '''
 
     def __init__(self, room, day, timeslot):

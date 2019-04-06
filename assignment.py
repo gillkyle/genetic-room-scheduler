@@ -12,6 +12,7 @@ class CourseAssignment:
         self.number = room_resources[0].code.split("-")[0]
         self.day = room_resources[0].code.split("-")[1]
         self.time = int(room_resources[0].code.split("-")[2])
+        self.timeslots = len(room_resources)
 
     def __repr__(self):
         return "%s(%r)" % (self.__class__, self.__dict__)

@@ -65,16 +65,18 @@ def main():
             # add course assignment to cas
 
     for course in sections:
-        index = 0
-        for schedule_on_this_day in course.days:
-            if schedule_on_this_day:
-                # get enough room resources required for the course
-                room_resources = available.pull_out_rooms(DAYS[index], course)
-                if len(room_resources) == 0:
-                    outside_building.append(course)
-                else:
-                    cas.append(CourseAssignment(room_resources, course))
-            index += 1
+        # get enough room resources required for the course
+        room_resources = available.pull_out_resources(course)
+
+        if len(room_resources) == 0:
+            outside_building.append(course)
+        else:
+            cas.append(CourseAssignment(room_resources, course))
+
+    # print("--COURSE ASSIGNMENTS---")
+    # print(cas)
+    # print("--OUTSIDE BLDG---")
+    # print(outside_building)
 
     print(cas[5].course.name)
     print("course", cas[5].course)
@@ -82,9 +84,10 @@ def main():
     print(cas[5].get_capacity_value())
     print(cas[5].get_pref_time_value())
     print(cas[5].get_pref_type_value())
-    print(cas[5])
-    print(len(cas))
-    print(outside_building)
+    # print(cas[5])
+    # print(len(cas))
+    # print(outside_building)
+
 
 
 ### Main runner ###
