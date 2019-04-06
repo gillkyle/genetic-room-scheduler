@@ -53,7 +53,6 @@ def main():
     print(available.rooms["Th"][-1])
 
     print("Add to Solution")
-    solution = Solution(None)
     cas = []
     outside_building = []
 
@@ -84,10 +83,13 @@ def main():
     print(cas[5].get_capacity_value())
     print(cas[5].get_pref_time_value())
     print(cas[5].get_pref_type_value())
+    print(cas[5].get_ind_fitness())
     # print(cas[5])
     # print(len(cas))
     # print(outside_building)
 
+    solution = Solution(cas, outside_building)
+    print(solution.get_fitness())
 
 
 ### Main runner ###

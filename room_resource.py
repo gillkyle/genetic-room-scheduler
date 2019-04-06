@@ -21,6 +21,16 @@ class AvailabeRooms:
     def add(self, room_resource):
         self.rooms[room_resource.day].append(room_resource)
 
+    def length(self, day):
+        return len(self.rooms[day])
+
+    def unused_rooms(self):
+        total = 0
+        for day in DAYS:
+            for _ in self.rooms[day]:
+                total += 1
+        return total
+
     def pull_out_rooms(self, course):
         '''
         remove a number of rooms from the available slot on a given day
@@ -68,6 +78,8 @@ class AvailabeRooms:
                     if avail_resources[0].room.capacity > course.num_students:
                         rooms += avail_resources
                         # remove the rooms we're returning from the availability
+                        for remove_index in range(i, i+number_of_slots):
+                            del self.rooms[DAYS[day_index]][remove_index]
                         break
             day_index += 1
 
