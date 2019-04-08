@@ -4,6 +4,7 @@ from assignment import CourseAssignment
 from room import Room
 from room_resource import AvailabeRooms, RoomResource, DAYS
 from solution import Solution
+from random import shuffle
 
 TOTAL_STUDENTS = 6277
 
@@ -19,7 +20,8 @@ def main():
             courses.append(c)
 
     print("Course list loaded")
-    print(courses[0])
+    print("Randomize courses")
+    shuffle(courses)
     sections = []
     for course in courses:
         for i in range(course.sections):
@@ -34,7 +36,7 @@ def main():
             rooms.append(r)
 
     print("Room list loaded")
-    print(rooms[0])
+    # print(rooms[0])
 
     print("Create 2880 room resources")
     available = AvailabeRooms()
@@ -50,18 +52,12 @@ def main():
             for i in range(0, 18):
                 available.add(RoomResource(room, day, i))
 
-    print(available.rooms["Th"][-1])
+    # print(available.rooms["Th"][-1])
 
     print("Add to Solution")
     cas = []
     outside_building = []
 
-    # go through all sections
-        # extract room resources 
-        # if resources is empty
-            # add course to outside_building
-        # else
-            # add course assignment to cas
 
     for course in sections:
         # get enough room resources required for the course
@@ -77,16 +73,13 @@ def main():
     # print("--OUTSIDE BLDG---")
     # print(outside_building)
 
-    print(cas[5].course.name)
-    print("course", cas[5].course)
-    print("room", cas[5].room)
-    print(cas[5].get_capacity_value())
-    print(cas[5].get_pref_time_value())
-    print(cas[5].get_pref_type_value())
-    print(cas[5].get_ind_fitness())
-    # print(cas[5])
-    # print(len(cas))
-    # print(outside_building)
+    # print(cas[5].course.name)
+    # print("course", cas[5].course)
+    # print("room", cas[5].room)
+    # print(cas[5].get_capacity_value())
+    # print(cas[5].get_pref_time_value())
+    # print(cas[5].get_pref_type_value())
+    # print(cas[5].get_ind_fitness())
 
     solution = Solution(cas, outside_building)
     print(solution.get_fitness())
