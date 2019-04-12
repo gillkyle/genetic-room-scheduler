@@ -58,7 +58,6 @@ def main():
     cas = []
     outside_building = []
 
-
     for course in sections:
         # get enough room resources required for the course
         room_resources = available.pull_out_resources(course)
@@ -81,7 +80,7 @@ def main():
     # print(cas[5].get_pref_type_value())
     # print(cas[5].get_ind_fitness())
 
-    solution = Solution(cas, outside_building)
+    solution = Solution(cas, outside_building, available)
     print(solution.get_fitness())
 
 

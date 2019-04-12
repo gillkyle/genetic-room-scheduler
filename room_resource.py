@@ -79,7 +79,7 @@ class AvailabeRooms:
                         rooms += avail_resources
                         # remove the rooms we're returning from the availability
                         for remove_index in range(i, i+number_of_slots):
-                            del self.rooms[DAYS[day_index]][remove_index]
+                            self.rooms[DAYS[day_index]].pop(remove_index)
                         break
             day_index += 1
 
