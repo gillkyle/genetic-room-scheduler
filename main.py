@@ -20,12 +20,6 @@ def main():
             courses.append(c)
 
     print("Course list loaded")
-    print("Randomize courses")
-    shuffle(courses)
-    sections = []
-    for course in courses:
-        for i in range(course.sections):
-            sections.append(course)
 
     with open('rooms.csv', mode="r") as room_csv:
         # read in the rooms
@@ -38,35 +32,46 @@ def main():
     print("Room list loaded")
     # print(rooms[0])
 
-    print("Create 2880 room resources")
-    available = AvailabeRooms()
-    # loop through all the days
-    for day in DAYS:
-        # add availability for every room
-        for room in rooms:
-            # 8:00 (0), 8:30 (1), 9:00 (2), 9:30 (3),
-            # 10:00 (4), 10:30 (5), 11:00 (6), 11:30 (7),
-            # 12:00 (8), 12:30 (9), 1:00 (10), 1:30 (11),
-            # 2:00 (12), 2:30 (13), 3:00 (14), 3:30 (15),
-            # 4:00 (16), 4:30 (17)
-            for i in range(0, 18):
-                available.add(RoomResource(room, day, i))
+    def generate_solution():
+        print("Create 2880 room resources")
+        available = AvailabeRooms()
+        # loop through all the days
+        for day in DAYS:
+            # add availability for every room
+            for room in rooms:
+                # 8:00 (0), 8:30 (1), 9:00 (2), 9:30 (3),
+                # 10:00 (4), 10:30 (5), 11:00 (6), 11:30 (7),
+                # 12:00 (8), 12:30 (9), 1:00 (10), 1:30 (11),
+                # 2:00 (12), 2:30 (13), 3:00 (14), 3:30 (15),
+                # 4:00 (16), 4:30 (17)
+                for i in range(0, 18):
+                    available.add(RoomResource(room, day, i))
+                    
+        # randomize course order and create each section
+        print("Randomize courses")
+        shuffle(courses)
+        sections = []
+        for course in courses:
+            for i in range(course.sections):
+                sections.append(course)
 
-    # print(available.rooms["Th"][-1])
 
-    print("Add to Solution")
-    cas = []
-    outside_building = []
+        # print(available.rooms["Th"][-1])
+        print("Add to Solution")
+        cas = []
+        outside_building = []
 
-    for course in sections:
-        # get enough room resources required for the course
-        room_resources = available.pull_out_resources(course)
+        for course in sections:
+            # get enough room resources required for the course
+            room_resources = available.pull_out_resources(course)
 
-        if len(room_resources) == 0:
-            outside_building.append(course)
-        else:
-            cas.append(CourseAssignment(room_resources, course))
+            if len(room_resources) == 0:
+                outside_building.append(course)
+            else:
+                cas.append(CourseAssignment(room_resources, course))
+        return Solution(cas, outside_building, available)
 
+    print(generate_solution().get_fitness())
     # print("--COURSE ASSIGNMENTS---")
     # print(cas)
     # print("--OUTSIDE BLDG---")
@@ -79,9 +84,6 @@ def main():
     # print(cas[5].get_pref_time_value())
     # print(cas[5].get_pref_type_value())
     # print(cas[5].get_ind_fitness())
-
-    solution = Solution(cas, outside_building, available)
-    print(solution.get_fitness())
 
 
 ### Main runner ###

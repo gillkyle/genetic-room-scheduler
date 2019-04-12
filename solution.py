@@ -2,6 +2,7 @@ from random import randint
 from room_resource import DAYS
 import more_itertools as mit
 
+
 class Solution:
     '''
     The composition of up to 93 unique course assignments all scheduled
@@ -29,7 +30,6 @@ class Solution:
         '''
         total_ind_fitness = 0
         # TODO work out free time calculations
-        free_time_blocks = 0
         students_outside_tnrb = 0
         used_rooms = set()
         for ca in self.course_assignments:
@@ -57,11 +57,13 @@ class Solution:
         free_time_block_sum = 0
         for day_timeslot in all_timeslots:
             for course_timeslot in day_timeslot:
-                contiguous_groups = [list(group) for group in mit.consecutive_groups(course_timeslot)]
-                len_contiguous_groups = list(map(lambda x: len(x), contiguous_groups))
+                # group blocks of numbers in each availability list eg [[1,2,3], [5,6]]
+                contiguous_groups = [
+                    list(group) for group in mit.consecutive_groups(course_timeslot)]
+                len_contiguous_groups = list(
+                    map(lambda x: len(x), contiguous_groups))
                 free_time_block_sum += max(len_contiguous_groups)
 
-        print(free_time_block_sum)
         total_unused_room = abs(len(used_rooms) - 32)
 
         avg_fitness_score = total_ind_fitness / len(self.course_assignments)
@@ -71,7 +73,7 @@ class Solution:
         print("---Avg fitness: ", avg_fitness_score)
         print()
         print("---Free time score: ", free_time_score)
-        print("from ", free_time_blocks, " blocks of free time")
+        print("from ", free_time_block_sum, " score for blocks of free time")
         print()
         print("---Outside building score: ", outside_bldg_score)
         print("from ", students_outside_tnrb, " students outside the building")
