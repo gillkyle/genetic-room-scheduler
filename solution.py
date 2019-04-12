@@ -70,17 +70,17 @@ class Solution:
         free_time_score = 100 * free_time_block_sum / 2880
         outside_bldg_score = round(100 * students_outside_tnrb / 6277)
         unused_room_score = 100 * total_unused_room / 32
-        print("---Avg fitness: ", avg_fitness_score)
-        print()
-        print("---Free time score: ", free_time_score)
-        print("from ", free_time_block_sum, " score for blocks of free time")
-        print()
-        print("---Outside building score: ", outside_bldg_score)
-        print("from ", students_outside_tnrb, " students outside the building")
-        print()
-        print("---Unused Room Score: ", unused_room_score)
-        print("from ", total_unused_room, " total unused rooms")
-        print()
+        # print("---Avg fitness: ", avg_fitness_score)
+        # print()
+        # print("---Free time score: ", free_time_score)
+        # print("from ", free_time_block_sum, " score for blocks of free time")
+        # print()
+        # print("---Outside building score: ", outside_bldg_score)
+        # print("from ", students_outside_tnrb, " students outside the building")
+        # print()
+        # print("---Unused Room Score: ", unused_room_score)
+        # print("from ", total_unused_room, " total unused rooms")
+        # print()
         return round((avg_fitness_score * 0.6) + (free_time_score * 0.2) - (outside_bldg_score * 0.2) + (unused_room_score * 0.2))
 
     def crossover(other):

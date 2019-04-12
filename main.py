@@ -4,9 +4,19 @@ from assignment import CourseAssignment
 from room import Room
 from room_resource import AvailabeRooms, RoomResource, DAYS
 from solution import Solution
+from generation import Generation
 from random import shuffle
+from collections import namedtuple
+
 
 TOTAL_STUDENTS = 6277
+
+run_opt = namedtuple(
+    'run_opt', ('num_solutions', 'pct_elite', 'pct_cross', 'pct_mut'))
+
+RUN_OPTIONS = [
+    run_opt(3, 0.05, 0.8, 0.05)
+]
 
 
 def main():
@@ -18,7 +28,6 @@ def main():
             c = Course(row["Course"], [row["Monday"] == "x", row["Tuesday"] == "x", row["Wednesday"] == "x", row["Thursday"] == "x", row["Friday"] == "x"],
                        row["Sections"], row["Hours"], row["Preferred Time"], row["Preferred Room Type"], row["Students Per Section"])
             courses.append(c)
-
     print("Course list loaded")
 
     with open('rooms.csv', mode="r") as room_csv:
@@ -28,12 +37,11 @@ def main():
         for row in room_reader:
             r = Room(row["Room"], row["Capacity"], row["Type"])
             rooms.append(r)
-
     print("Room list loaded")
     # print(rooms[0])
 
     def generate_solution():
-        print("Create 2880 room resources")
+        # print("Create 2880 room resources")
         available = AvailabeRooms()
         # loop through all the days
         for day in DAYS:
@@ -46,18 +54,17 @@ def main():
                 # 4:00 (16), 4:30 (17)
                 for i in range(0, 18):
                     available.add(RoomResource(room, day, i))
-                    
+
         # randomize course order and create each section
-        print("Randomize courses")
+        # print("Randomize courses")
         shuffle(courses)
         sections = []
         for course in courses:
             for i in range(course.sections):
                 sections.append(course)
 
-
         # print(available.rooms["Th"][-1])
-        print("Add to Solution")
+        # print("Add to Solution")
         cas = []
         outside_building = []
 
@@ -71,19 +78,17 @@ def main():
                 cas.append(CourseAssignment(room_resources, course))
         return Solution(cas, outside_building, available)
 
-    print(generate_solution().get_fitness())
-    # print("--COURSE ASSIGNMENTS---")
-    # print(cas)
-    # print("--OUTSIDE BLDG---")
-    # print(outside_building)
+    solutions = []
+    for options in RUN_OPTIONS:
+        for i in range(options.num_solutions):
+            solutions.append(generate_solution())
 
-    # print(cas[5].course.name)
-    # print("course", cas[5].course)
-    # print("room", cas[5].room)
-    # print(cas[5].get_capacity_value())
-    # print(cas[5].get_pref_time_value())
-    # print(cas[5].get_pref_type_value())
-    # print(cas[5].get_ind_fitness())
+    gen = Generation(solutions)
+    print(gen.solutions[0].get_fitness())
+    print(gen.fitness_list())
+    print(gen.avg_fitness())
+    print(gen.min_fitness())
+    print(gen.max_fitness())
 
 
 ### Main runner ###
