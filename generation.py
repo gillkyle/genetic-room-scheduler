@@ -1,3 +1,6 @@
+from random import shuffle
+
+
 class Generation:
     '''
     A whole host of scheduling solutions
@@ -41,6 +44,23 @@ class Generation:
             total += solution.get_fitness()
         return round(total / len(self.solutions))
 
+    def crossover_solutions(self, base_gen):
+        num_remaining_solutions = self.num_solutions - len(self.solutions)
+        possible_solutions = base_gen.get_crossovers()
+        for _ in range(num_remaining_solutions):
+            shuffle(possible_solutions)
+            self.solutions.append(possible_solutions[0])
+        return None
+
+    def mutate_solutions(self):
+        return
+
     def get_elites(self):
+        self.sort_solutions_fitness()
         num_of_elites = int(len(self.solutions)*self.pct_elite)
         return self.solutions[:num_of_elites]
+
+    def get_crossovers(self):
+        self.sort_solutions_fitness()
+        num_of_crossovers = int(len(self.solutions)*self.pct_cross)
+        return self.solutions[:num_of_crossovers]

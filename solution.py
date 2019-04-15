@@ -35,6 +35,7 @@ class Solution:
             0.2 * StudentsOutsideTNRB  +  
             0.2 * UnusedRooms
         '''
+        # memoize the fitness so this doesn't have to run everytime
         if self.fitness is None:
             total_ind_fitness = 0
             # TODO work out free time calculations
@@ -97,16 +98,10 @@ class Solution:
         else:
             return self.fitness
 
-    def crossover(other):
-        '''
-        crosses with another solution and returns a new and improved solution combines solutions A and B and returns a solution C that's better than either A or B
-        '''
-        # TODO
-        return None
-
     def mutate():
         '''
         mutates the solution in a randomized way
         '''
         # TODO
+        # swap course assignments within a solution
         return None
