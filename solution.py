@@ -16,6 +16,12 @@ class Solution:
     def __repr__(self):
         return "%s(%r)" % (self.__class__, self.__dict__)
 
+    def __eq__(self, other):
+        return self.get_fitness() == other.get_fitness()
+
+    def __lt__(self, other):
+        return self.get_fitness() < other.get_fitness()
+
     def num_of_assignments(self):
         return len(self.course_assignments)
 

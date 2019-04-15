@@ -78,17 +78,33 @@ def main():
                 cas.append(CourseAssignment(room_resources, course))
         return Solution(cas, outside_building, available)
 
-    solutions = []
     for options in RUN_OPTIONS:
+        solutions = []
+        # generate a list of solutions to provide to the generation
         for i in range(options.num_solutions):
             solutions.append(generate_solution())
 
-    gen = Generation(solutions)
-    print(gen.solutions[0].get_fitness())
-    print(gen.fitness_list())
-    print(gen.avg_fitness())
-    print(gen.min_fitness())
-    print(gen.max_fitness())
+        # create generation with solutions and percentages from run options
+        gen = Generation(solutions, options)
+
+        # debug print values
+        print(gen.solutions[0].get_fitness())
+        print(gen.fitness_list())
+        print(gen.avg_fitness())
+        print(gen.min_fitness())
+        print(gen.max_fitness())
+
+        # order solutions in the generation based on fitness
+        gen.sort_solutions_fitness()
+        print(gen.fitness_list())
+
+        # create a new generation
+
+        # keep elites
+
+        # use crossover percentage from the solution set to fill in the rest of the new generation
+
+        # mutate the % in the new generation
 
 
 ### Main runner ###
