@@ -40,3 +40,7 @@ class Generation:
         for solution in self.solutions:
             total += solution.get_fitness()
         return round(total / len(self.solutions))
+
+    def get_elites(self):
+        num_of_elites = int(len(self.solutions)*self.pct_elite)
+        return self.solutions[:num_of_elites]

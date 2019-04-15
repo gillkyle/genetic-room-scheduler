@@ -15,7 +15,7 @@ run_opt = namedtuple(
     'run_opt', ('num_solutions', 'pct_elite', 'pct_cross', 'pct_mut'))
 
 RUN_OPTIONS = [
-    run_opt(3, 0.05, 0.8, 0.05)
+    run_opt(200, 0.05, 0.8, 0.05)
 ]
 
 
@@ -85,18 +85,26 @@ def main():
             solutions.append(generate_solution())
 
         # create generation with solutions and percentages from run options
-        gen = Generation(solutions, options)
+        base_gen = Generation(solutions, options)
 
         # debug print values
-        print(gen.solutions[0].get_fitness())
-        print(gen.fitness_list())
-        print(gen.avg_fitness())
-        print(gen.min_fitness())
-        print(gen.max_fitness())
+        print(base_gen.solutions[0].get_fitness())
+        print(base_gen.fitness_list())
+        print(base_gen.avg_fitness())
+        print(base_gen.min_fitness())
+        print(base_gen.max_fitness())
 
         # order solutions in the generation based on fitness
-        gen.sort_solutions_fitness()
-        print(gen.fitness_list())
+        base_gen.sort_solutions_fitness()
+        print(base_gen.fitness_list())
+
+        gen_avg = []
+        # loop until moving average stabilizes below 1.0 for last 10 items
+        while len(gen_avg) < 10:
+            new_gen = Generation(base_gen.get_elites(), options)
+            print(new_gen.fitness_list())
+            gen_avg.append(new_gen.avg_fitness())
+            base_gen = new_gen
 
         # create a new generation
 

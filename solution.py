@@ -12,6 +12,7 @@ class Solution:
         self.course_assignments = course_assignments
         self.courses_outside_building = courses_outside_building
         self.remaining_available = remaining_available
+        self.fitness = None
 
     def __repr__(self):
         return "%s(%r)" % (self.__class__, self.__dict__)
@@ -34,60 +35,67 @@ class Solution:
             0.2 * StudentsOutsideTNRB  +  
             0.2 * UnusedRooms
         '''
-        total_ind_fitness = 0
-        # TODO work out free time calculations
-        students_outside_tnrb = 0
-        used_rooms = set()
-        for ca in self.course_assignments:
-            total_ind_fitness += ca.get_ind_fitness()
-            used_rooms.add(ca.room.number)
+        if self.fitness is None:
+            total_ind_fitness = 0
+            # TODO work out free time calculations
+            students_outside_tnrb = 0
+            used_rooms = set()
+            for ca in self.course_assignments:
+                total_ind_fitness += ca.get_ind_fitness()
+                used_rooms.add(ca.room.number)
 
-        for course in self.courses_outside_building:
-            students_outside_tnrb += course.num_students
+            for course in self.courses_outside_building:
+                students_outside_tnrb += course.num_students
 
-        free_days_score = []
-        all_timeslots = []
-        for day in DAYS:
-            code = 0
-            last_timeslot = 0
-            timeslots = []
-            curr_times = []
-            for avail in self.remaining_available.rooms[day]:
-                # build an array of all unused room codes
-                if code > int(avail.code.split("-")[2]):
-                    timeslots.append(curr_times)
-                    curr_times = []
-                code = int(avail.code.split("-")[2])
-                curr_times.append(code)
-            all_timeslots.append(timeslots)
-        free_time_block_sum = 0
-        for day_timeslot in all_timeslots:
-            for course_timeslot in day_timeslot:
-                # group blocks of numbers in each availability list eg [[1,2,3], [5,6]]
-                contiguous_groups = [
-                    list(group) for group in mit.consecutive_groups(course_timeslot)]
-                len_contiguous_groups = list(
-                    map(lambda x: len(x), contiguous_groups))
-                free_time_block_sum += max(len_contiguous_groups)
+            free_days_score = []
+            all_timeslots = []
+            for day in DAYS:
+                code = 0
+                last_timeslot = 0
+                timeslots = []
+                curr_times = []
+                for avail in self.remaining_available.rooms[day]:
+                    # build an array of all unused room codes
+                    if code > int(avail.code.split("-")[2]):
+                        timeslots.append(curr_times)
+                        curr_times = []
+                    code = int(avail.code.split("-")[2])
+                    curr_times.append(code)
+                all_timeslots.append(timeslots)
+            free_time_block_sum = 0
+            for day_timeslot in all_timeslots:
+                for course_timeslot in day_timeslot:
+                    # group blocks of numbers in each availability list eg [[1,2,3], [5,6]]
+                    contiguous_groups = [
+                        list(group) for group in mit.consecutive_groups(course_timeslot)]
+                    len_contiguous_groups = list(
+                        map(lambda x: len(x), contiguous_groups))
+                    free_time_block_sum += max(len_contiguous_groups)
 
-        total_unused_room = abs(len(used_rooms) - 32)
+            total_unused_room = abs(len(used_rooms) - 32)
 
-        avg_fitness_score = total_ind_fitness / len(self.course_assignments)
-        free_time_score = 100 * free_time_block_sum / 2880
-        outside_bldg_score = round(100 * students_outside_tnrb / 6277)
-        unused_room_score = 100 * total_unused_room / 32
-        # print("---Avg fitness: ", avg_fitness_score)
-        # print()
-        # print("---Free time score: ", free_time_score)
-        # print("from ", free_time_block_sum, " score for blocks of free time")
-        # print()
-        # print("---Outside building score: ", outside_bldg_score)
-        # print("from ", students_outside_tnrb, " students outside the building")
-        # print()
-        # print("---Unused Room Score: ", unused_room_score)
-        # print("from ", total_unused_room, " total unused rooms")
-        # print()
-        return round((avg_fitness_score * 0.6) + (free_time_score * 0.2) - (outside_bldg_score * 0.2) + (unused_room_score * 0.2))
+            avg_fitness_score = total_ind_fitness / \
+                len(self.course_assignments)
+            free_time_score = 100 * free_time_block_sum / 2880
+            outside_bldg_score = round(100 * students_outside_tnrb / 6277)
+            unused_room_score = 100 * total_unused_room / 32
+            # print("---Avg fitness: ", avg_fitness_score)
+            # print()
+            # print("---Free time score: ", free_time_score)
+            # print("from ", free_time_block_sum, " score for blocks of free time")
+            # print()
+            # print("---Outside building score: ", outside_bldg_score)
+            # print("from ", students_outside_tnrb, " students outside the building")
+            # print()
+            # print("---Unused Room Score: ", unused_room_score)
+            # print("from ", total_unused_room, " total unused rooms")
+            # print()
+            fitness = round((avg_fitness_score * 0.6) + (free_time_score * 0.2) -
+                            (outside_bldg_score * 0.2) + (unused_room_score * 0.2))
+            self.fitness = fitness
+            return fitness
+        else:
+            return self.fitness
 
     def crossover(other):
         '''
