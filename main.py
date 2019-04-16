@@ -15,7 +15,7 @@ run_opt = namedtuple(
     'run_opt', ('num_solutions', 'pct_elite', 'pct_cross', 'pct_mut'))
 
 RUN_OPTIONS = [
-    run_opt(50, 0.02, 0.8, 0.05)
+    run_opt(200, 0.05, 0.8, 0.05)
 ]
 
 
@@ -105,21 +105,18 @@ def main():
             # keep elites
             new_gen = Generation(base_gen.get_elites(), options)
             gen_avg.append(new_gen.avg_fitness())
-            
+
             # use crossover percentage from the solution set to fill in the rest of the new generation
             new_gen.crossover_solutions(base_gen)
             print(new_gen.fitness_list())
-            
+
             # mutate the % in the new generation
             new_gen.mutate_solutions()
-            
+
             # reset the base_gen to create another generation on next loop
             base_gen = new_gen
 
         print(gen_avg)
-
-
-
 
 
 ### Main runner ###
