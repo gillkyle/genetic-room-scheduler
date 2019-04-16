@@ -47,12 +47,18 @@ class Generation:
     def crossover_solutions(self, base_gen):
         num_remaining_solutions = self.num_solutions - len(self.solutions)
         possible_solutions = base_gen.get_crossovers()
+        # TODO change this from just taking a shuffled set of the possible solutions and adding
         for _ in range(num_remaining_solutions):
             shuffle(possible_solutions)
             self.solutions.append(possible_solutions[0])
         return None
 
     def mutate_solutions(self):
+        possible_solutions = self.solutions
+        shuffle(possible_solutions)
+        num_to_mutate = int(self.num_solutions * self.pct_mut)
+        for index in range(num_to_mutate):
+            possible_solutions[index].mutate()
         return
 
     def get_elites(self):

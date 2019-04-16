@@ -1,4 +1,4 @@
-from random import randint
+from random import randint, shuffle
 from room_resource import DAYS
 import more_itertools as mit
 
@@ -98,10 +98,18 @@ class Solution:
         else:
             return self.fitness
 
-    def mutate():
+    def mutate(self):
         '''
         mutates the solution in a randomized way
         '''
-        # TODO
-        # swap course assignments within a solution
+        possible_assignments = self.course_assignments
+        base_assignment = possible_assignments[0]
+        index_to_update = 0
+        for assignment in possible_assignments[1:]:
+            index_to_update += 1
+            # swap the course assignments that are the same size and same day
+            if base_assignment.day == assignment.day and base_assignment.timeslots == assignment.timeslots:
+                self.course_assignments[0] = base_assignment
+                self.course_assignments[index_to_update] = assignment
+                return
         return None
