@@ -15,7 +15,11 @@ run_opt = namedtuple(
     'run_opt', ('num_solutions', 'pct_elite', 'pct_cross', 'pct_mut'))
 
 RUN_OPTIONS = [
-    run_opt(200, 0.05, 0.8, 0.05)
+    run_opt(50, 0.05, 0.8, 0.05),
+    run_opt(50, 0.05, 0.4, 0.20),
+    run_opt(50, 0.15, 0.4, 0.10),
+    run_opt(50, 0.25, 0.8, 0.10),
+    run_opt(50, 0.75, 0.8, 0.05)
 ]
 
 
@@ -78,7 +82,15 @@ def main():
                 cas.append(CourseAssignment(room_resources, course))
         return Solution(cas, outside_building, available)
 
+    run_number = 0
     for options in RUN_OPTIONS:
+        run_number += 1
+        print(f"------------RUN {run_number}--------------")
+        print(
+            f"-- Population: {options.num_solutions} - Elite: {options.pct_elite}")
+        print(
+            f"-- Crossover: {options.pct_cross} - Mutation: {options.pct_mut}")
+        print("-------------------------------")
         solutions = []
         # generate a list of solutions to provide to the generation
         for i in range(options.num_solutions):
@@ -99,8 +111,10 @@ def main():
         print(base_gen.fitness_list())
 
         gen_avg = []
+        gen_number = 1
         # loop until moving average stabilizes below 1.0 for last 10 items
         while len(gen_avg) < 10:
+            print(f"Generation {gen_number}")
             # create a new generation
             # keep elites
             new_gen = Generation(base_gen.get_elites(), options)
@@ -115,6 +129,7 @@ def main():
 
             # reset the base_gen to create another generation on next loop
             base_gen = new_gen
+            gen_number += 1
 
         print(gen_avg)
 

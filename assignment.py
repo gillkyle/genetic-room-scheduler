@@ -17,6 +17,11 @@ class CourseAssignment:
     def __repr__(self):
         return "%s(%r)" % (self.__class__, self.__dict__)
 
+    def set_new(self, resource):
+        self.room = resource.room
+        self.number = resource.number
+        self.time = resource.timeslot
+
     def get_capacity_value(self):
         '''
         CapacityValue is assigned:

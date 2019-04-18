@@ -47,10 +47,29 @@ class Generation:
     def crossover_solutions(self, base_gen):
         num_remaining_solutions = self.num_solutions - len(self.solutions)
         possible_solutions = base_gen.get_crossovers()
-        # TODO change this from just taking a shuffled set of the possible solutions and adding
+
+        # combine the two solutions into improved solution
+        def crossover(sol1, sol2):
+            # use the better solution as the basis for the new solution
+            if sol1.get_fitness() > sol2.get_fitness():
+                # find the worst assignment to replace
+                (worst, index) = sol1.get_worst_assignment()
+                improved_time = sol1.get_improved_resource(worst)
+                if improved_time is not None:
+                    sol1.course_assignments[index].set_new(improved_time)
+            else:
+                (worst, index) = sol2.get_worst_assignment()
+                improved_time = sol2.get_improved_resource(worst)
+                if improved_time is not None:
+                    sol2.course_assignments[index].set_new(improved_time)
+
+            new_solution = sol2
+            return new_solution
+
         for _ in range(num_remaining_solutions):
             shuffle(possible_solutions)
-            self.solutions.append(possible_solutions[0])
+            self.solutions.append(
+                crossover(possible_solutions[0], possible_solutions[1]))
         return None
 
     def mutate_solutions(self):

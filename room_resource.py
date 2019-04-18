@@ -95,6 +95,8 @@ class RoomResource:
         self.code = f'{room.number}-{day}-{timeslot}'
         self.day = day
         self.room = room
+        self.timeslot = timeslot
+        self.number = room.number
 
     def __repr__(self):
         return "%s(%r)" % (self.__class__, self.__dict__)

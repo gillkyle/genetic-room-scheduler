@@ -26,6 +26,28 @@ class Solution:
     def num_of_assignments(self):
         return len(self.course_assignments)
 
+    def get_improved_resource(self, assignment):
+        for resource in self.remaining_available.rooms[assignment.day]:
+            if assignment.course.pref_time == 'Afternoon' and resource.timeslot > 8:
+                # assign to an availiability after 8
+                return resource
+            elif assignment.course.pref_time == 'Morning' and resource.timeslot < 8:
+                # assign to an availiability before 8
+                return resource
+        return None
+
+    def get_worst_assignment(self):
+        low = self.course_assignments[0]
+        index = 0
+        targetIndex = 0
+        for ca in self.course_assignments:
+            if ca.get_ind_fitness() < low.get_ind_fitness():
+                low = ca
+                targetIndex = index
+            index += 1
+        return (low, targetIndex)
+        # return min(self.course_assignments, key=lambda x: x.get_ind_fitness())
+
     def get_fitness(self):
         '''
         returns a fitness value in the range 0-100
