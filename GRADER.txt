@@ -1,0 +1,33 @@
+--------------------------------
+Final State of Genetic Algorithm
+--------------------------------
+
+My project is at a level that works the genetic algorithm to improve my initial average fitness of the first generation up a few points. 
+
+The main file holds procedural logic that advances through teach step taken by the algorithm. The following steps take place in compliance with the requirements:
+
+1. Data Loading (pulling data from csv's and storing them in defined classes)
+2. Solution Generation (creating potential course assignment solutions)
+3. Model Testing (iterating through each set of run options)
+4. Generation Improvement (creating new generations with elites/crossover/mutation)
+5. Output Results (print the results of each generation)
+
+-----------
+Good Things
+-----------
+
+I broke out almost every representation of data that could be stored into a new class that could contain methods specific to it for calculating statistics we were looking for. 
+
+With custom structures I was able to memoize things like fitness values that were otherwize time consuming to calculate. This sped up my algorithm significantly.
+
+Crossover, mutation, and elitism improve average fitness relatively quickly though the improvements are marginal.
+
+I used a semi-intelligent approach to creating solutions. I followed many of the requirements getting proper timeslots for each course and verifying they held capacity but ignored some rules like what time of the day I inserted them at. This means that initial solutions generally begin with a decent fitness but some of the best solutions generated still end up with some rules violated.
+
+-----------
+Hard Things
+-----------
+
+Finding the proper way to hold data for courses/rooms/sections/times was hard to juggle when they had to live across separate days of the week and for different amounts of time. I ended up breaking out each room into 18 availability slots that I pulled out for a course assignment.
+
+Getting my algorithm's crossover to significantly improve the average of the whole generation was difficult. I wrote a simple mechanism for my crossover that would take the weakest course assignment and move it to a better time of day to improve its score in the new generation, which only improved the solution marginally. That meant most of the time with each successive generation scores simply approach the premiere elite solution from the initial generation created.
