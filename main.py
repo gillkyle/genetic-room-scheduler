@@ -7,6 +7,9 @@ from solution import Solution
 from generation import Generation
 from random import shuffle
 from collections import namedtuple
+from statistics import mean
+import itertools
+import operator
 
 
 TOTAL_STUDENTS = 6277
@@ -112,8 +115,9 @@ def main():
 
         gen_avg = []
         gen_number = 1
+        moving_avg = 999
         # loop until moving average stabilizes below 1.0 for last 10 items
-        while len(gen_avg) < 10:
+        while moving_avg > 1.0:
             print(f"Generation {gen_number}")
             # create a new generation
             # keep elites
@@ -126,6 +130,16 @@ def main():
 
             # mutate the % in the new generation
             new_gen.mutate_solutions()
+
+            # calculate moving average
+            avgs = gen_avg[-10:]
+            avg_diffs = []
+            if len(avgs) >= 10:
+                print(avgs)
+                for i in range(len(avgs)-1):
+                    avg_diffs.append(abs(avgs[i] - avgs[i + 1]))
+                print(avg_diffs)
+                moving_avg = mean(avg_diffs)
 
             # reset the base_gen to create another generation on next loop
             base_gen = new_gen
