@@ -8,8 +8,6 @@ from generation import Generation
 from random import shuffle
 from collections import namedtuple
 from statistics import mean
-import itertools
-import operator
 
 
 TOTAL_STUDENTS = 6277
@@ -18,11 +16,14 @@ run_opt = namedtuple(
     'run_opt', ('num_solutions', 'pct_elite', 'pct_cross', 'pct_mut'))
 
 RUN_OPTIONS = [
-    run_opt(50, 0.05, 0.8, 0.05),
-    run_opt(50, 0.05, 0.4, 0.20),
-    run_opt(50, 0.15, 0.4, 0.10),
-    run_opt(50, 0.25, 0.8, 0.10),
-    run_opt(50, 0.75, 0.8, 0.05)
+    run_opt(200, 0.05, 0.8, 0.05),
+    run_opt(200, 0.05, 0.4, 0.20),
+    run_opt(200, 0.15, 0.4, 0.10),
+    run_opt(200, 0.25, 0.8, 0.10),
+    run_opt(200, 0.75, 0.8, 0.05),
+    # run_opt(1000, 0.05, 0.8, 0.05),
+    # run_opt(1000, 0.05, 0.4, 0.2),
+    # run_opt(1000, 0.15, 0.4, 0.1)
 ]
 
 
@@ -111,22 +112,23 @@ def main():
 
         # order solutions in the generation based on fitness
         base_gen.sort_solutions_fitness()
-        print(base_gen.fitness_list())
 
         gen_avg = []
         gen_number = 1
         moving_avg = 999
         # loop until moving average stabilizes below 1.0 for last 10 items
-        while moving_avg > 1.0:
-            print(f"Generation {gen_number}")
+        print(
+            f"Generation, Mean Fitness, Max Fitness, Min Fitness")
+        while moving_avg > 1:
             # create a new generation
             # keep elites
             new_gen = Generation(base_gen.get_elites(), options)
             gen_avg.append(new_gen.avg_fitness())
+            print(
+                f"{gen_number}, {new_gen.avg_fitness()}, {new_gen.max_fitness()}, {new_gen.min_fitness()}")
 
             # use crossover percentage from the solution set to fill in the rest of the new generation
             new_gen.crossover_solutions(base_gen)
-            print(new_gen.fitness_list())
 
             # mutate the % in the new generation
             new_gen.mutate_solutions()
@@ -135,16 +137,22 @@ def main():
             avgs = gen_avg[-10:]
             avg_diffs = []
             if len(avgs) >= 10:
-                print(avgs)
                 for i in range(len(avgs)-1):
                     avg_diffs.append(abs(avgs[i] - avgs[i + 1]))
-                print(avg_diffs)
                 moving_avg = mean(avg_diffs)
 
             # reset the base_gen to create another generation on next loop
             base_gen = new_gen
             gen_number += 1
 
+        new_gen.sort_solutions_fitness()
+        best_solution = new_gen.solutions[0]
+        print()
+        print("Best solution:")
+        print("Course, Days, Room, Start Time, End Time")
+        for ca in best_solution.course_assignments:
+            print(
+                f"{ca.course.name}, {ca.day}, {ca.room.number}, {ca.convert_to_time_range()}")
         print(gen_avg)
 
 

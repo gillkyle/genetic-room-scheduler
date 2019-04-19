@@ -31,29 +31,6 @@ class AvailabeRooms:
                 total += 1
         return total
 
-    def pull_out_rooms(self, course):
-        '''
-        remove a number of rooms from the available slot on a given day
-        '''
-
-        def students_exceed_capacity(self):
-            if self.room.capacity < course.num_students:
-                # print(
-                #     f'Capacity of {self.room.capacity} is too small for {course.num_students} that need the class.')
-                return False
-            else:
-                # print(
-                #     f'{self.room.capacity} is appropriate for {course.num_students} students.')
-                return True
-
-        filtered_rooms = list(
-            filter(students_exceed_capacity, self.rooms[day]))
-        if len(filtered_rooms) < 1:
-            return []
-
-        rooms = filtered_rooms[0:course.needed_time_slots()]
-        return rooms
-
     def pull_out_resources(self, course):
         rooms = []
         number_of_slots = course.needed_time_slots()

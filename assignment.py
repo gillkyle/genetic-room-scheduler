@@ -1,4 +1,5 @@
 from random import randint
+from math import floor, modf
 
 
 class CourseAssignment:
@@ -80,3 +81,25 @@ class CourseAssignment:
         IndvFitness = CapacityValue + PrefTime + PrefRoomType
         '''
         return self.get_capacity_value() + self.get_pref_time_value() + self.get_pref_type_value()
+
+    def convert_to_time_range(self):
+        possible_hours = [8, 8.5, 9, 9.5, 10, 10.5, 11,
+                          11.5, 12, 12.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5]
+        start_hour = possible_hours[self.time]
+        min_to_add = 0
+        if floor(start_hour) % start_hour == 0:
+            start_string = f"{start_hour}:00"
+        else:
+            start_string = f"{floor(start_hour)}:30"
+
+        course_hours = float(self.course.hours)
+        end_hour = start_hour + course_hours
+        min_pct, end_hour_whole = modf(end_hour)
+        end_minutes = min_pct * 60
+        if end_minutes == 0:
+            end_minutes_string = "00"
+        else:
+            end_minutes_string = str(int(end_minutes))
+        end_string = f"{int(end_hour_whole)}:{end_minutes_string}"
+
+        return f"{start_string}, {end_string}"
