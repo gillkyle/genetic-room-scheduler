@@ -21,9 +21,9 @@ RUN_OPTIONS = [
     run_opt(200, 0.15, 0.4, 0.10),
     run_opt(200, 0.25, 0.8, 0.10),
     run_opt(200, 0.75, 0.8, 0.05),
-    # run_opt(1000, 0.05, 0.8, 0.05),
-    # run_opt(1000, 0.05, 0.4, 0.2),
-    # run_opt(1000, 0.15, 0.4, 0.1)
+    run_opt(1000, 0.05, 0.8, 0.05),
+    run_opt(1000, 0.05, 0.4, 0.2),
+    run_opt(1000, 0.15, 0.4, 0.1)
 ]
 
 
@@ -55,7 +55,7 @@ def main():
     # SOLUTION GENERATION
     ##############################
     def generate_solution():
-        # print("Create 2880 room resources")
+        # Create 2880 room resources
         available = AvailabeRooms()
         # loop through all the days
         for day in DAYS:
