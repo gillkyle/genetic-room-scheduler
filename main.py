@@ -28,6 +28,9 @@ RUN_OPTIONS = [
 
 
 def main():
+    ##############################
+    # DATA LOADING
+    ##############################
     with open('classes.csv', mode="r") as class_csv:
         # read in the courses
         class_reader = csv.DictReader(class_csv, delimiter=",")
@@ -48,6 +51,9 @@ def main():
     print("Room list loaded")
     # print(rooms[0])
 
+    ##############################
+    # SOLUTION GENERATION
+    ##############################
     def generate_solution():
         # print("Create 2880 room resources")
         available = AvailabeRooms()
@@ -71,7 +77,6 @@ def main():
             for i in range(course.sections):
                 sections.append(course)
 
-        # print(available.rooms["Th"][-1])
         # print("Add to Solution")
         cas = []
         outside_building = []
@@ -86,6 +91,9 @@ def main():
                 cas.append(CourseAssignment(room_resources, course))
         return Solution(cas, outside_building, available)
 
+    ##############################
+    # MODEL TESTING
+    ##############################
     run_number = 0
     for options in RUN_OPTIONS:
         run_number += 1
@@ -103,16 +111,12 @@ def main():
         # create generation with solutions and percentages from run options
         base_gen = Generation(solutions, options)
 
-        # debug print values
-        # print(base_gen.solutions[0].get_fitness())
-        # print(base_gen.fitness_list())
-        # print(base_gen.avg_fitness())
-        # print(base_gen.min_fitness())
-        # print(base_gen.max_fitness())
-
         # order solutions in the generation based on fitness
         base_gen.sort_solutions_fitness()
 
+        ##############################
+        # GENERATION IMPROVEMENT
+        ##############################
         gen_avg = []
         gen_number = 1
         moving_avg = 999
@@ -145,6 +149,9 @@ def main():
             base_gen = new_gen
             gen_number += 1
 
+        ##############################
+        # OUTPUT RESULTS
+        ##############################
         new_gen.sort_solutions_fitness()
         best_solution = new_gen.solutions[0]
         print()
@@ -153,7 +160,7 @@ def main():
         for ca in best_solution.course_assignments:
             print(
                 f"{ca.course.name}, {ca.day}, {ca.room.number}, {ca.convert_to_time_range()}")
-        print(gen_avg)
+        # print(gen_avg)
 
 
 ### Main runner ###
